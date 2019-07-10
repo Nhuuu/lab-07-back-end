@@ -7,18 +7,20 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
-// Application Setup
+//Global variable
 const PORT = process.env.PORT || 3000;
+
+// Application Setup
 const app = express();
 app.use(cors());
 
 // Routes
-app.get('/location', (request,response) => {
+app.get('/location', (request, response) => {
   try {
     const locationData = searchToLatLong(request.query.data);
     response.send(locationData);
   }
-  catch(error) {
+  catch (error) {
     console.error(error);
     response.status(500).send('Status: 500. So sorry, something went wrong getting the location.');
   }
@@ -29,12 +31,13 @@ app.get('/weather', (request, response) => {
     const weatherData = searchForWeather();
     response.send(weatherData);
   }
-  catch(error) {
+  catch (error) {
     console.error(error);
     response.status(500).send('Status: 500. Something went wrong getting the weather.');
   }
 });
 
+// Catch and respond to routes other than the ones defined
 app.use('*', (request, response) => {
   response.send('you got to the wrong place');
 })
@@ -45,7 +48,7 @@ function searchToLatLong(query) {
   const location = new Location(query, geoData);
   return location;
 }
-  
+
 // Refactor the searchToLatLong function to replace the object literal with a call to this constructor function:
 function Location(query, geoData) {
   this.search_query = query;
@@ -53,8 +56,8 @@ function Location(query, geoData) {
   this.latitude = geoData.results[0].geometry.location.lat;
   this.longitude = geoData.results[0].geometry.location.lng;
 }
-  
-function searchForWeather(){
+
+function searchForWeather() {
   let weatherArr = [];
   const weatherData = require('./data/darksky.json');
   weatherData.daily.data.forEach(day => {
@@ -64,7 +67,7 @@ function searchForWeather(){
   return weatherArr;
 }
 
-function Weather(weatherData){
+function Weather(weatherData) {
   let time = new Date(weatherData.time * 1000).toDateString();
   this.forecast = weatherData.summary;
   this.time = time;
@@ -72,4 +75,4 @@ function Weather(weatherData){
 
 
 // Make sure the server is listening for requests
-app.listen(PORT, () => console.log(`App is listening on ${PORT}`) );
+app.listen(PORT, () => console.log(`App is listening on ${PORT}`));
