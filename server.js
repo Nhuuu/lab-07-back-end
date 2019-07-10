@@ -57,6 +57,7 @@ function Location(query, geoData) {
   this.longitude = geoData.results[0].geometry.location.lng;
 }
 
+//The searchForWeather function returns an array with the day and the forecast for the day.
 function searchForWeather() {
   let weatherArr = [];
   const weatherData = require('./data/darksky.json');
@@ -67,6 +68,7 @@ function searchForWeather() {
   return weatherArr;
 }
 
+//Constructor function to create weather objects
 function Weather(weatherData) {
   let time = new Date(weatherData.time * 1000).toDateString();
   this.forecast = weatherData.summary;
