@@ -10,8 +10,6 @@ const superagent = require('superagent');
 
 //Global variable
 const PORT = process.env.PORT || 3000;
-const lat = '';
-const lng = '';
 
 // Application Setup
 const app = express();
@@ -26,6 +24,8 @@ app.get('/location', searchToLatLong);
 app.get('/weather', searchForWeather);
 
 
+app.get('/events', searchForEvents);
+
 // Catch and respond to routes other than the ones defined
 app.use('*', (request, response) => {
   response.send('you got to the wrong place');
@@ -35,11 +35,11 @@ app.use('*', (request, response) => {
 function searchToLatLong(request, response) {
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${request.query.data}&key=${process.env.GEOCODE_API_KEY}`;
   superagent.get(url)
-    .then( result => {
+    .then(result => {
       const location = new Location(request.query.data, result);
       response.send(location);
     })
-    .catch (e => {
+    .catch(e => {
       console.error(e);
       response.status(500).send('Status 500: So sorry I broke trying to get location.');
     })
@@ -58,7 +58,7 @@ function searchForWeather(request, response) {
   const location = request.query.data;
   const url = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${location.latitude},${location.longitude}`;
   superagent.get(url)
-    .then( result => {
+    .then(result => {
       const weatherArr = result.body.daily.data.map(day => {
         return new Weather(day);
       })
@@ -78,5 +78,28 @@ function Weather(weatherData) {
 }
 
 
+function searchForEvents(request, response) {
+  const location = request.query.data;
+  const url = `https://www.eventbriteapi.com/v3/events/search/?location.longitude=${location.longitude}&location.latitude=${location.latitude}&expand=venue&token=${process.env.EVENTBRITE_API_KEY}`;
+  superagent.get(url)
+    .then(result => {
+      const eventArr = result.body.events.map(eventData => {
+        return new Event(eventData);
+      })
+      response.send(eventArr);
+    })
+    .catch(e => {
+      console.error(e);
+      response.status(500).send('Status 500: I broke trying to get weather.')
+    })
+}
+
+//Constructor function to create event objects
+function Event(eventData) {
+  this.link = eventData.url;
+  this.name = eventData.name.text;
+  this.event_date = new Date(eventData.start.utc).toDateString();
+  this.summary = eventData.summary;
+}
 // Make sure the server is listening for requests
 app.listen(PORT, () => console.log(`App is listening on ${PORT}`));
