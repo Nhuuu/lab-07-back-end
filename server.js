@@ -10,6 +10,8 @@ const superagent = require('superagent');
 
 //Global variable
 const PORT = process.env.PORT || 3000;
+const lat = '';
+const lng = '';
 
 // Application Setup
 const app = express();
@@ -17,22 +19,12 @@ app.use(cors());
 
 // Listen for /location route. Return a 500 status if there are errors in getting data
 // Call searchToLatLong function with location entered
-
 app.get('/location', searchToLatLong);
 
 // Listen for /weather route. Return a 500 status if there are errors in getting data
 // Call searchForWeather function to get weather data for the location
+app.get('/weather', searchForWeather);
 
-app.get('/weather', (request, response) => {
-  try {
-    const weatherData = searchForWeather();
-    response.send(weatherData);
-  }
-  catch (error) {
-    console.error(error);
-    response.status(500).send('Status: 500. Something went wrong getting the weather.');
-  }
-});
 
 // Catch and respond to routes other than the ones defined
 app.use('*', (request, response) => {
@@ -46,9 +38,10 @@ function searchToLatLong(request, response) {
     .then( result => {
       const location = new Location(request.query.data, result);
       response.send(location);
-    }) .catch (e => {
+    })
+    .catch (e => {
       console.error(e);
-      response.status(500).send('Status 500: So sorry I broke');
+      response.status(500).send('Status 500: So sorry I broke trying to get location.');
     })
 }
 
@@ -60,15 +53,21 @@ function Location(query, result) {
   this.longitude = result.body.results[0].geometry.location.lng;
 }
 
-//The searchForWeather function returns an array with the day and the forecast for the day.
-function searchForWeather() {
-  let weatherArr = [];
-  const weatherData = require('./data/darksky.json');
-  weatherData.daily.data.forEach(day => {
-    const weather = new Weather(day);
-    weatherArr.push(weather);
-  })
-  return weatherArr;
+//The searchForWeather function returns an array with the day and the forecast for the day. Refactor to use map method.
+function searchForWeather(request, response) {
+  const location = request.query.data;
+  const url = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${location.latitude},${location.longitude}`;
+  superagent.get(url)
+    .then( result => {
+      const weatherArr = result.body.daily.data.map(day => {
+        return new Weather(day);
+      })
+      response.send(weatherArr);
+    })
+    .catch(e => {
+      console.error(e);
+      response.status(500).send('Status 500: I broke trying to get weather.')
+    })
 }
 
 //Constructor function to create weather objects

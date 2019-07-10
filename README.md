@@ -25,6 +25,7 @@ Finish time: 11:00am
 
 Actual time needed to complete: 1 hour and 10 min
 
+<!-- ------------- -->
 Number and name of feature: Weather
 
 Estimate of time needed to complete: 30 min
@@ -35,6 +36,7 @@ Finish time: 11:30am
 
 Actual time needed to complete: 30 min
 
+<!-- ------------- -->
 Number and name of feature: Errors
 
 Estimate of time needed to complete: 15 min
@@ -44,6 +46,30 @@ Start time: 11:30am
 Finish time: 11:45am
 
 Actual time needed to complete: 15 min
+
+<!-- ------------- -->
+Number and name of feature: Location refactor
+
+Estimate of time needed to complete: 30 min
+
+Start time: 10:00am
+
+Finish time: 10:30am
+
+Actual time needed to complete: 30 min
+
+<!-- ------------- -->
+Number and name of feature: Weather to map method
+
+Estimate of time needed to complete: 30 min
+
+Start time: 10:00am
+
+Finish time: 10:30am
+
+Actual time needed to complete: 30 min
+
+<!-- ------------- -->
 
 
 ## Credits and Collaborations
