@@ -14,7 +14,9 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(cors());
 
-// Routes
+// Listen for /location route. Return a 500 status if there are errors in getting data
+// Call searchToLatLong function with location entered
+
 app.get('/location', (request, response) => {
   try {
     const locationData = searchToLatLong(request.query.data);
@@ -25,6 +27,9 @@ app.get('/location', (request, response) => {
     response.status(500).send('Status: 500. So sorry, something went wrong getting the location.');
   }
 });
+
+// Listen for /weather route. Return a 500 status if there are errors in getting data
+// Call searchForWeather function to get weather data for the location
 
 app.get('/weather', (request, response) => {
   try {
