@@ -63,14 +63,22 @@ Number and name of feature: Weather to map method
 
 Estimate of time needed to complete: 30 min
 
-Start time: 10:00am
+Start time: 10:30am
 
-Finish time: 10:30am
+Finish time: 11:45am
 
-Actual time needed to complete: 30 min
+Actual time needed to complete: 1 hour 15 min
 
 <!-- ------------- -->
+Number and name of feature: Add events using eventbrite API
 
+Estimate of time needed to complete: 1 hour
+
+Start time: 11:50am
+
+Finish time: 12:50am
+
+Actual time needed to complete: 1 hour
 
 ## Credits and Collaborations
 Nicholas Paro - https://github.com/paronicholas
