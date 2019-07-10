@@ -48,4 +48,6 @@ Actual time needed to complete: 15 min
 
 ## Credits and Collaborations
 Nicholas Paro - https://github.com/paronicholas
+Padmapriya Ganapathi - https://github.com/gpadmapriya
+Peter Lee - https://github.com/leepj85
 
