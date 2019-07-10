@@ -90,7 +90,7 @@ function searchForEvents(request, response) {
     })
     .catch(e => {
       console.error(e);
-      response.status(500).send('Status 500: I broke trying to get weather.')
+      response.status(500).send('Status 500: I broke trying to get events.')
     })
 }
 
